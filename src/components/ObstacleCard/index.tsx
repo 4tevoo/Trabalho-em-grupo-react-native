@@ -4,14 +4,25 @@ import { styles } from './style'
 
 export default function ObstacleCard({ categoria, gravidade, descricao, data_criacao }: ObstacleCardType) {
     function corGravidade(gravidade: string) {
-        if (gravidade === 'baixa') return '#FABD03'
-        if (gravidade === 'media') return '#E65E2A'
-        if (gravidade === 'alta') return '#DB3025'
+        if (gravidade === 'resolvido') return '#109D57'
+        if (gravidade === 'intermediario') return '#FABD03'
+        if (gravidade === 'inacessivel') return '#DB3025'
     }
+    function tituloCategoria(categoria: string) {
+        if (categoria === 'buraco') return 'Buraco'
+        if (categoria === 'rampa_bloqueada') return 'Rampa bloqueada' 
+        if (categoria === 'elevador_quebrado') return 'Elevador quebrado'
+        if (categoria === 'objeto_aereo') return 'Objeto aereo'
+        if (categoria === 'calcada_obstruida') return 'Calcada obstruida'
+        if (categoria === 'semaforo_quebrado') return 'Semafaro quebrado'
+        if (categoria === 'falta_de_acessibilidade') return 'Falta de acessibilidade'
+        if (categoria === 'outro') return 'Outro'
+    }
+
     function tituloGravidade(gravidade: string) {
-        if (gravidade === 'baixa') return 'Baixa'
-        if (gravidade === 'media') return 'Média'
-        if (gravidade === 'alta') return 'Crítica'
+        if (gravidade === 'resolvido') return 'Resolvido'
+        if (gravidade === 'intermediario') return 'Intermediário'
+        if (gravidade === 'inacessivel') return 'Inacessível'
     }
     return (
         <View style={styles.container}>
@@ -22,7 +33,7 @@ export default function ObstacleCard({ categoria, gravidade, descricao, data_cri
             <View style={styles.wrapper}>
 
                 <Text style={styles.categoria}>
-                    {categoria}
+                    {tituloCategoria(categoria)}
                 </Text>
                 <Text style={styles.descricao}>
                     {descricao}
