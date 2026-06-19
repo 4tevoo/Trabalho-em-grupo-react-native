@@ -39,14 +39,14 @@ export function TabsRouter() {
 
       <Tab.Screen name="TabsHome" component={Home} options={{
         tabBarIcon: ({focused, color, size}) => (
-          <Ionicons name={focused ? 'home-outline' : 'home'} color={color} size={size + 4} />
+          <Ionicons name={!focused ? 'home-outline' : 'home'} color={color} size={size + 4} />
         )
       }}/>
 
       <Tab.Screen name="TabsObstaculos" component={Home} options={{
         tabBarActiveTintColor: '#D83025',
         tabBarIcon: ({focused, color, size}) => (
-          <Ionicons name={focused ? 'warning-outline' : 'warning'} color={color} size={size + 4} />
+          <Ionicons name={!focused ? 'warning-outline' : 'warning'} color={color} size={size + 4} />
         )
       }}/>
 
@@ -61,7 +61,7 @@ export function TabsRouter() {
       <Tab.Screen name="TabsMapa" component={Map} options={{
         tabBarActiveTintColor: '#109D57',
         tabBarIcon: ({focused, color, size}) => (
-          <Ionicons name={focused ? 'map-outline' : 'map'} color={color} size={size + 4} />
+          <Ionicons name={!focused ? 'map-outline' : 'map'} color={color} size={size + 4} />
         )
       }}/>
 
