@@ -9,23 +9,21 @@
     "ios": {
       "supportsTablet": true
     },
-
     "android": {
       "package": "com.geowatch.vialivre",
       "versionCode": 1,
       "predictiveBackGestureEnabled": false
     },
-
     "web": {},
-
     "plugins": [
       [
         "react-native-maps",
         {
-          "androidGoogleMapsApiKey": "",
-          "iosGoogleMapsApiKey": ""
+          "androidGoogleMapsApiKey": "CHAVEAPI",
+          "iosGoogleMapsApiKey": "CHAVEAPI"
         }
-      ]
+      ],
+      "expo-font"
     ]
   }
 }
