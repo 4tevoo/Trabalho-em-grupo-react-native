@@ -8,10 +8,16 @@ const Drawer = createDrawerNavigator<ParametrosRotasDrawer>();
 export function DrawerRouter() {
   return (
     <Drawer.Navigator screenOptions={{
-        drawerPosition: 'right'
+        drawerPosition: 'right',
+        drawerLabelStyle: {
+          fontSize: 18
+        }
         }}>
-      <Drawer.Screen name="TabsRouter" component={TabsRouter} options={{headerShown: false}}/>
-      <Drawer.Screen name="DrawerSobre" component={Sobre} />
+      <Drawer.Screen name="TabsRouter" component={TabsRouter} options={{
+        headerShown: false,
+        drawerLabel: 'Home'
+        }}/>
+      <Drawer.Screen name="DrawerSobre" component={Sobre} options={{ drawerLabel: 'Sobre' }}/>
     </Drawer.Navigator>
   );
 }

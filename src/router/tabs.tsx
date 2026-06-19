@@ -6,6 +6,9 @@ import { DrawerActions } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Map } from '../pages/Map';
 import { Obstaculos } from '../pages/Obstaculos';
+import { Ionicons } from '@expo/vector-icons';
+import { Form } from '../pages/Form';
+import { View } from 'react-native';
 
 const Tab = createBottomTabNavigator<ParametrosRotasTabs>();
 
@@ -23,18 +26,45 @@ export function TabsRouter() {
         alignItems: 'center',
       },
       tabBarStyle: {
-        borderTopWidth: 0,
+        borderTopWidth: 1,
+        borderColor: '#777',
+        backgroundColor: '#E2E2E2',
         paddingBottom: insets.bottom,
         height: 50 + insets.bottom,
-        borderColor: 'transparent',
         justifyContent: 'center',
       },
-      tabBarActiveTintColor: '#16A1FF', // possívelmente mudar as cores depois
-      tabBarInactiveTintColor: '#E3E4E9'
+      tabBarActiveTintColor: '#3B75B0', // possívelmente mudar as cores depois
+      tabBarInactiveTintColor: '#777777',
     }}>
-      <Tab.Screen name="TabsHome" component={Home} />
-      <Tab.Screen name="TabsObstaculos" component={Obstaculos}/>
-      <Tab.Screen name="TabsMapa" component={Map} />
+
+      <Tab.Screen name="TabsHome" component={Home} options={{
+        tabBarIcon: ({focused, color, size}) => (
+          <Ionicons name={focused ? 'home-outline' : 'home'} color={color} size={size + 4} />
+        )
+      }}/>
+
+      <Tab.Screen name="TabsObstaculos" component={Home} options={{
+        tabBarActiveTintColor: '#D83025',
+        tabBarIcon: ({focused, color, size}) => (
+          <Ionicons name={focused ? 'warning-outline' : 'warning'} color={color} size={size + 4} />
+        )
+      }}/>
+
+      <Tab.Screen name="TabsForm" component={Form} options={{
+        tabBarIcon: () => (
+            <View style={{borderRadius: '50%', height: 58, width: 58, backgroundColor: '#E65E2A', alignItems: 'center', justifyContent: 'center', boxShadow: '0px 0px 10px #E65E2A'}}>
+              <Ionicons name="add" color="#1A1A1A" size={42}/>
+            </View>
+        )
+      }}/>
+
+      <Tab.Screen name="TabsMapa" component={Map} options={{
+        tabBarActiveTintColor: '#109D57',
+        tabBarIcon: ({focused, color, size}) => (
+          <Ionicons name={focused ? 'map-outline' : 'map'} color={color} size={size + 4} />
+        )
+      }}/>
+
       <Tab.Screen
         name="OpenDrawer"
         component={Sobre}
@@ -43,7 +73,11 @@ export function TabsRouter() {
             e.preventDefault();
             navigation.dispatch(DrawerActions.openDrawer());
           },
-        })}
+        })} options={{
+        tabBarIcon: ({color, size}) => (
+          <Ionicons name="list" color={color} size={size + 4} />
+        )
+      }}
       />
 
     </Tab.Navigator>
