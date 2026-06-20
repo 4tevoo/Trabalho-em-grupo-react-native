@@ -21,10 +21,12 @@ export const styles = StyleSheet.create({
         alignSelf: 'flex-start',
     },
     gravidade: {
+        color:'#FFF',
         fontSize: 20,
         borderRadius: 25,
         padding: 10,
         alignSelf: 'flex-start',
+        fontWeight:'500'
     },
     wrapper: {
         flexDirection: 'column',
