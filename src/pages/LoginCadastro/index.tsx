@@ -9,10 +9,11 @@ import { PcdModal } from '../../components/Modal/pcdModal';
 import { UserProfile } from '../../types/auth';
 import { PickerField } from '../../components/Picker/PickerField';
 import { TIPOS_DEFICIENCIA } from '../../types/deficiencias';
+import { GOOGLE_WEB_CLIENT_ID } from '../../config';
 
 // Configuração do Google (fora do componente)
 GoogleSignin.configure({
-  webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+  webClientId: GOOGLE_WEB_CLIENT_ID,
   offlineAccess: true,
 });
 
@@ -89,7 +90,18 @@ export const LoginCadastro = () => {
         tipo_deficiencia,
       });
       await signUp(data.email, data.password, data.nome, data.tipo_deficiencia);
-      Toast.show({ type: 'success', text1: 'Conta criada com sucesso!' });
+      Toast.show({
+        type: 'success',
+        text1: 'Conta criada!',
+        text2: 'Agora faça login com suas credenciais.'
+      });
+      // Limpa campos e alterna para login
+      setNome('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setTipo_deficiencia('nenhuma');
+      setModo('login');
     } catch (error) {
       if (error instanceof z.ZodError) {
         const fieldErrors: Record<string, string> = {};
@@ -128,7 +140,6 @@ export const LoginCadastro = () => {
         data_criacao: new Date().toISOString(),
         tipo_deficiencia: null,
         foto_url: foto_url || null,
-        reputacao: 0,
       };
       const { data: criado, error: insertError } = await supabase
         .from('usuario')
@@ -169,7 +180,8 @@ export const LoginCadastro = () => {
         loginWithSocial(perfil);
       }
     } catch (error) {
-      // Verifica se é erro de cancelamento (Google)
+      // Verifica se é erro de cancelamento (Google) 
+      // Pelo amor de deus que trabalho complicado
       if (error instanceof Error && 'code' in error && error.code === statusCodes.SIGN_IN_CANCELLED) {
         return; // usuário cancelou
       }
@@ -188,7 +200,7 @@ export const LoginCadastro = () => {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1, backgroundColor: '#fff' }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={'height'}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: 24 }}>
 
