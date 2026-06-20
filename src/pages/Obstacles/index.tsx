@@ -41,14 +41,8 @@ const [filtro, setFiltro] = useState<DisabilityType | null>(null)
               <View style={styles.obstacles}>
 
                 <ObstacleFlatlist></ObstacleFlatlist>
-                <ObstacleFlatlist></ObstacleFlatlist>
-                <ObstacleFlatlist></ObstacleFlatlist>
-                <ObstacleFlatlist></ObstacleFlatlist>
-                <ObstacleFlatlist></ObstacleFlatlist>
-                <ObstacleFlatlist></ObstacleFlatlist>
 
               </View>
-
             </>
           }
         />
