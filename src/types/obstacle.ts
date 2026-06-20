@@ -8,11 +8,11 @@ export type ObstacleCategory =
   | 'falta_de_acessibilidade' 
   | 'outro';
 
-export type GravityLevel = 'baixa' | 'media' | 'alta'
+export type GravityLevel = 'resolvido' | 'intermediario' | 'inacessivel'
 
 export type DisabilityType =
+  | 'visual'  
   | 'cadeirante'
-  | 'visual'
   | 'mobilidade_reduzida'
   | 'outro'
 
