@@ -20,11 +20,9 @@ export default function App() {
   }
 
   return (
-    <AuthProvider>
       <NavigationContainer>
         <Routers />
         <Toast />
       </NavigationContainer>
-    </AuthProvider>
   );
 }

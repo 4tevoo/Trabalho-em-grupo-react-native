@@ -1,4 +1,4 @@
-import { ActivityIndicator, Alert, Image, ScrollView, Text, TextInput, TouchableOpacity, View} from 'react-native'
+import { ActivityIndicator, Alert, Image, Modal, ScrollView, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import { styles } from './style';
 import { CATEGORIAS } from '../../data/Categoria';
 import { FlatList } from 'react-native';
@@ -6,7 +6,7 @@ import { CategoriaNome } from '../../data/Categoria/type';
 import { useEffect, useRef, useState } from 'react';
 import { CardCategoria } from '../../components/CardCategoria';
 import MapView, { Marker, MapPressEvent } from 'react-native-maps';
-import { obterLocalizacao } from '../../services/localizacaoService';
+import { converterEnderecoEmCoordenadas, obterLocalizacao } from '../../services/localizacaoService';
 import { Coordenadas } from '../../types/coordenadas';
 import { KeyboardAvoidingView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -15,6 +15,7 @@ import { escolherDaGaleria } from '../../services/fotoService';
 import { criarObstaculo } from '../../services/obstaculoService';
 import { DadosObstaculo } from '../../types/obstacle';
 import { useAuth } from '../../context/AuthContext';
+import { Botao } from '../../components/Botao';
 
 
 
@@ -32,6 +33,10 @@ export const Form = () => {
   const [fotos, setFotos] = useState<string[]>([]);
 
   const [enviando, setEnviando] = useState<boolean>(false);
+
+  const [modalEnderecoVisivel, setModalEnderecoVisivel] = useState<boolean>(false);
+  const [enderecoInput, setEnderecoInput] = useState<string>('');
+  const [buscandoEndereco, setBuscandoEndereco] = useState<boolean>(false);
 
   const mapaRef = useRef<MapView | null>(null);
 
@@ -83,14 +88,39 @@ export const Form = () => {
     }
   }
 
+  const buscaEndereco = async () => {
+  if (enderecoInput.trim() === '') {
+    Alert.alert('Campo vazio', 'Por favor, digite um endereço válido.');
+    return;
+  }
+
+  setBuscandoEndereco(true);
+  const coordenadas = await converterEnderecoEmCoordenadas(enderecoInput);
+
+  if (coordenadas) {
+    setLocalizacaoSelecionada(coordenadas);
+
+    mapaRef.current?.animateToRegion({
+      ...coordenadas,
+      latitudeDelta: 0.005,
+      longitudeDelta: 0.005,
+    }, 1000);
+
+    setEnderecoInput('');
+    setModalEnderecoVisivel(false);
+  } else {
+    Alert.alert('Local não encontrado', 'Não conseguimos converter este endereço em coordenadas. Verifique os dados e tente novamente.');
+  }
   
+  setBuscandoEndereco(false);
+};
 
   const enviarObstaculo = async () =>{
 
-    // if (!user) {
-    //   Alert.alert('Erro de autenticação', 'Você precisa estar logado para registrar um obstáculo.');
-    //   return;
-    // }
+    if (!user) {
+      Alert.alert('Erro de autenticação', 'Você precisa estar logado para registrar um obstáculo.');
+      return;
+    }
     if (categoriaSelecionada === '') {
       Alert.alert('Categoria obrigatória', 'Por favor, selecione uma categoria para o obstáculo.');
       return;
@@ -111,7 +141,7 @@ export const Form = () => {
     setEnviando(true)
 
     const dadosCriarObstaculo:DadosObstaculo = {
-      profile_id: 'a9cdc393-c0f0-4480-b4a6-28b605592119',
+      profile_id: user.id,
       categoria: categoriaSelecionada,
       latitude: localizacaoSelecionada.latitude,
       longitude: localizacaoSelecionada.longitude,
@@ -236,19 +266,27 @@ export const Form = () => {
 
             
           </View>
-          <TouchableOpacity 
-              style={styles.botaoGps} 
-              onPress={carregarGps}
-              disabled={carregandoGps}
-              accessibilityRole="button"
-              accessibilityLabel="Centralizar mapa na minha localização atual"
-            >
-              {carregandoGps ? (
-                <ActivityIndicator color="white" />
-              ) : (
-                <Text style={styles.textoBotaoGps}>Localização Atual</Text>
-              )}
-          </TouchableOpacity>
+          <Botao 
+            title="Localização Atual"
+            variante="primary"
+            padding={10}
+            fontSize={12}
+            carregando={carregandoGps}
+            onPress={carregarGps}
+            accessibilityLabel="Centralizar mapa na minha localização atual"
+            icon={<MaterialIcons name='location-searching' size={20} color={'#ffffff'}/>}
+          />
+
+          <Botao 
+            title="Digitar endereço"
+            variante="secondary"
+            padding={10}
+            fontSize={12}
+            style={{ marginTop: 5 }}
+            carregando={buscandoEndereco}
+            onPress={() => setModalEnderecoVisivel(true)} 
+            accessibilityLabel="Digitar endereço manualmente"
+          />
 
           {localizacaoSelecionada && (
             <Text 
@@ -318,18 +356,82 @@ export const Form = () => {
           </TextInput>
         </View>
               
-        <TouchableOpacity 
-          style={styles.botaoEnviar} 
+        <Botao 
+          title="Enviar relato"
+          variante="primary"
+          padding={20}
+          fontSize={16}
+          carregando={enviando}
           onPress={enviarObstaculo}
-          disabled={enviando}
-        >
-          {enviando ? (
-                <ActivityIndicator color="white" />
-              ) : (
-                <Text style={[styles.textoBotaoGps, {fontSize: 16}]}>Enviar relato</Text>
-          )}
-        </TouchableOpacity>      
+          accessibilityLabel="Enviar formulário de relato"
+        />    
       </ScrollView>
+      {/* MODAL DE DIGITAR ENDEREÇO */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalEnderecoVisivel}
+        onRequestClose={() => setModalEnderecoVisivel(false)}
+        aria-modal={true}
+      >
+        <View style={styles.modalOverlay}>
+          <View 
+            style={styles.modalContent}
+            accessibilityRole="none"
+          >
+            {/* TÍTULO DO MODAL */}
+            <Text 
+              style={styles.modalTitulo} 
+              accessibilityRole="header"
+            >
+              Digitar Endereço
+            </Text>
+
+            <Text style={styles.modalSubTitulo}>
+              Insira o nome da rua, número e cidade para localizar o obstáculo no mapa.
+            </Text>
+
+            <TextInput
+              style={styles.modalInput}
+              placeholder="Exemplo: Av. Alberto Braune, 100 - Centro, Nova Friburgo"
+              placeholderTextColor="#9c9c9c"
+              value={enderecoInput}
+              onChangeText={setEnderecoInput}
+              autoFocus={true}
+              accessibilityLabel="Campo de texto para digitação do endereço completo"
+              accessibilityHint="Digite o local do obstáculo com rua, número, bairro e cidade."
+            />
+            
+            <View style={styles.modalContainerBotoes}>
+              <View style={{ flex: 1 }}>
+                <Botao
+                  title="Cancelar"
+                  variante="secondary"
+                  padding={12}
+                  fontSize={14}
+                  onPress={() => {
+                    setEnderecoInput('');
+                    setModalEnderecoVisivel(false);
+                  }}
+                  accessibilityLabel="Cancelar busca e fechar janela"
+                />
+              </View>
+
+              <View style={{ flex: 1 }}>
+                <Botao
+                  title="Buscar"
+                  variante="primary"
+                  padding={12}
+                  fontSize={14}
+                  carregando={buscandoEndereco}
+                  onPress={buscaEndereco}
+                  accessibilityLabel="Confirmar endereço digitado e pesquisar no mapa"
+                />
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </KeyboardAvoidingView>
   )
 }
