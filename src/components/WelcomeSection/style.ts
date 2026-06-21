@@ -5,18 +5,18 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingTop: 24,
         paddingBottom: 8,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#F8F9FA',
     },
 
     greeting: {
         fontSize: 26,
         fontWeight: 'bold',
-        color: '#121114',
+        color: '#1A1A1A',
         marginBottom: 4,
     },
 
     subtitle: {
         fontSize: 14,
-        color: '#717171',
+        color: '#777777',
     },
 })

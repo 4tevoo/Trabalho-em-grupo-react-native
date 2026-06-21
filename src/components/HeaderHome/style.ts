@@ -1,29 +1,25 @@
 import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
+    safeArea: {
+        backgroundColor: '#3B75B0',
+    },
+
     container: {
         height: 64,
         paddingHorizontal: 16,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#3B75B0',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        borderBottomWidth: 1,
-        borderBottomColor: '#ECECF3',
     },
 
-    logoBox: {
-        paddingHorizontal: 16,
-        paddingVertical: 6,
-        borderWidth: 1,
-        borderColor: '#ECECF3',
-        borderRadius: 6,
-    },
-
-    logoText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#121114',
+    logoImage: {
+        height: 100,
+        width: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 5,
     },
 
     avatarButton: {

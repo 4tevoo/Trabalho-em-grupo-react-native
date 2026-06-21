@@ -10,22 +10,22 @@ export const styles = StyleSheet.create ({
     },
 
     cardBlue: {
-        backgroundColor: '#1565C0',
+        backgroundColor: '#3B75B0',
     },
 
     cardDark: {
-        backgroundColor: '#121114',
+        backgroundColor: '#1A1A1A',
     },
 
     value: {
         fontSize: 32,
         fontWeight: 'bold',
-        color: '#FFFFFF',
+        color: '#F8F9FA',
     },
 
     label: {
         fontSize: 13, 
-        color: '#FFFFFF',
+        color: '#F8F9FA',
         opacity: 0.85,
     },
 })
