@@ -23,10 +23,9 @@ export const obterLocalizacao = async (): Promise<Coordenadas | null> => {
 };
 
 
-
 export const converterCoordenadasEmEndereco = async (
-  latitude: number,longitude: number): 
-  Promise<EnderecoFormatado | null> => {
+  latitude: number,longitude: number
+): Promise<EnderecoFormatado | null> => {
   try {
     const resultado = await Location.reverseGeocodeAsync({ latitude, longitude });
     if (resultado.length === 0) return null;
@@ -35,14 +34,31 @@ export const converterCoordenadasEmEndereco = async (
     const endereco: EnderecoFormatado = {
       rua: local.street ?? 'Rua não encontrada',
       numero: local.streetNumber ?? 'S/N',
-      bairro: local.district ?? 'Bairro não identificado',
-      cidade: local.subregion ?? local.city ?? 'Cidade não identificada',
+      bairro: local.district ?? 'Bairro não encontrado',
+      cidade: local.subregion ?? local.city ?? 'Cidade não encontrada',
     };
 
     return endereco;
 
   } catch (error) {
     console.error('Erro ao converter coordenadas em endereço:', error);
+    return null;
+  }
+};
+
+export const converterEnderecoEmCoordenadas = async (
+  enderecoCompleto: string
+): Promise<Coordenadas | null> => {
+  try {
+
+    const resultado = await Location.geocodeAsync(enderecoCompleto);
+    if (resultado.length === 0) return null;
+
+    const { latitude, longitude } = resultado[0];
+    return { latitude, longitude };
+
+  } catch (error) {
+    console.error('Erro ao buscar coordenadas pelo endereço:', error);
     return null;
   }
 };
