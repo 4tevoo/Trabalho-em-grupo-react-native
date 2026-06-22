@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
+
   container: {
-    flex: 1,
     paddingHorizontal: 20,
     paddingVertical: 70,
-    backgroundColor: '#E2E2E2'
+    backgroundColor: '#E2E2E2',
   },
 
   title: {
@@ -25,6 +25,12 @@ export const styles = StyleSheet.create({
     marginTop: 26,
   },
 
+  filterSubTitle: {
+    fontWeight: '600',
+    color: '#1A1A1A',
+    marginBottom: 8,
+  },
+
   filterButtonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -33,7 +39,7 @@ export const styles = StyleSheet.create({
 
   mapContainer: {
     width: '100%',
-    height: 300,
+    height: 400,
     borderRadius: 12,
     overflow: 'hidden',
     borderWidth: 2,
@@ -68,6 +74,16 @@ export const styles = StyleSheet.create({
     color: '#1A1A1A',
     fontSize: 16,
     fontWeight: '600'
+  },
+
+  cameraButton: {
+    position: 'absolute',
+    top: '5%',
+    right: '5%',
+    backgroundColor: '#1A1A1A',
+    alignSelf: 'flex-start',
+    padding: 8,
+    borderRadius: 16,
   },
 
   accessibleMapButton: {

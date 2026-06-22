@@ -6,7 +6,8 @@ export const styles = StyleSheet.create({
     },
     content: {
         paddingHorizontal: 20,
-        paddingVertical: 70,
+        paddingTop: 20,
+        paddingBottom: 30,
         backgroundColor: '#E2E2E2',
         gap: 15
     },
@@ -159,5 +160,58 @@ export const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'Montserrat-Bold',
         fontSize: 16
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        borderRadius: 16,
+        padding: 24,
+        width: '100%',
+        shadowColor: '#000',
+        elevation: 5, 
+    },
+    modalTitulo: {
+        fontSize: 18,
+        fontFamily: 'Montserrat-Bold',
+        color: '#333333',
+        marginBottom: 8,
+        textAlign: 'center',
+    },
+    modalSubTitulo: {
+        fontSize: 14,
+        color: '#666666',
+        marginBottom: 16,
+        textAlign: 'center',
+        lineHeight: 20,
+    },
+    modalInput: {
+        borderWidth: 1,
+        borderColor: '#cccccc',
+        borderRadius: 8,
+        padding: 12,
+        fontSize: 14,
+        color: '#333333',
+        marginBottom: 20,
+        backgroundColor: '#fafafa',
+    },
+    modalContainerBotoes: {
+        flexDirection: 'row',
+        gap: 12,
+        width: '100%',
+    },
+    headerRegistro:{
+        backgroundColor: '#3B75B0'
+    },
+    tituloHeader:{
+        fontFamily: 'Montserrat-Bold',
+        color: 'white',
+        padding: 20,
+        fontSize: 20
     }
 })
