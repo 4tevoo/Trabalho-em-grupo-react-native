@@ -1,4 +1,4 @@
-# ViaLivre, um aplicativo parar livrar seu caminho
+# ViaLivre, um aplicativo para livrar seu caminho
 A ideia do aplicativo e garantir o acesso e o direito de ir e vir à todos independente da dificulade. O aplicativo conta com mapas em que os próprios usuários, incentivados a cultivar um senso de comunidade, contribui para a notificação de passagens perigosas principalmente para pessoas com necessidades específicas.
 
 ## Como rodar:
