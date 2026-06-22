@@ -204,16 +204,33 @@ export const LoginCadastro = () => {
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', padding: 24 }}>
 
-        <View style={{ alignItems: 'center', marginBottom: 32 }}>
-          <Image source={require('../../assets/logo.png')} style={{ width: 80, height: 80 }} resizeMode="contain" />
-          <Text style={{ fontSize: 28, fontWeight: 'bold', marginTop: 8 }}>Via Livre</Text>
+        <View style={{ alignItems: 'center', marginBottom: 32 }} accessible={false}>
+          <Image 
+            source={require('../../assets/logo.png')} 
+            style={{ width: 80, height: 80 }} 
+            resizeMode="contain" 
+            importantForAccessibility="no"
+          />
+          <Text style={{ fontSize: 28, fontWeight: 'bold', marginTop: 8 }} accessibilityRole="header">Via Livre</Text>
         </View>
 
-        <View style={styles.tabContainer}>
-          <TouchableOpacity style={[styles.tab, modo === 'login' && styles.tabActive]} onPress={() => setModo('login')}>
+        <View style={styles.tabContainer} accessibilityRole="tablist">
+          <TouchableOpacity 
+            style={[styles.tab, modo === 'login' && styles.tabActive]} 
+            onPress={() => setModo('login')}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: modo === 'login' }}
+            accessibilityLabel="Aba de Login"
+          >
             <Text style={[styles.tabText, modo === 'login' && styles.tabTextActive]}>Login</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.tab, modo === 'cadastro' && styles.tabActive]} onPress={() => setModo('cadastro')}>
+          <TouchableOpacity 
+            style={[styles.tab, modo === 'cadastro' && styles.tabActive]} 
+            onPress={() => setModo('cadastro')}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: modo === 'cadastro' }}
+            accessibilityLabel="Aba de Cadastro"
+          >
             <Text style={[styles.tabText, modo === 'cadastro' && styles.tabTextActive]}>Cadastro</Text>
           </TouchableOpacity>
         </View>
@@ -246,7 +263,7 @@ export const LoginCadastro = () => {
           />
         )}
 
-        <View style={styles.separator}>
+        <View style={styles.separator} importantForAccessibility="no-hide-descendants">
           <View style={styles.separatorLine} />
           <Text style={styles.separatorText}>ou</Text>
           <View style={styles.separatorLine} />
@@ -257,6 +274,9 @@ export const LoginCadastro = () => {
           color={GoogleSigninButton.Color.Dark}
           onPress={handleGoogleLogin}
           style={styles.googleButton}
+          accessibilityRole="button"
+          accessibilityLabel="Entrar com o Google"
+          accessibilityHint="Realiza a autenticação utilizando sua conta do Google"
         />
 
         <Text style={styles.footerText}>
@@ -344,7 +364,7 @@ interface FieldProps {
 
 const Field = ({ label, value, onChange, placeholder, error, secureTextEntry, autoCapitalize, keyboardType }: FieldProps) => (
   <View style={styles.fieldContainer}>
-    <Text style={styles.fieldLabel}>{label}</Text>
+    <Text style={styles.fieldLabel} importantForAccessibility="no-hide-descendants">{label}</Text>
     <TextInput
       style={[styles.fieldInput, error && styles.fieldInputError]}
       placeholder={placeholder}
@@ -353,8 +373,12 @@ const Field = ({ label, value, onChange, placeholder, error, secureTextEntry, au
       secureTextEntry={secureTextEntry}
       autoCapitalize={autoCapitalize || 'sentences'}
       keyboardType={keyboardType || 'default'}
+
+      accessibilityLabel={label}
+      accessibilityHint={error ? `Erro atual: ${error}` : `Digite seu ${label.toLowerCase()}`}
+      aria-invalid={!!error}
     />
-    {error && <Text style={styles.fieldError}>{error}</Text>}
+    {error && <Text style={styles.fieldError} accessibilityLiveRegion="assertive">{error}</Text>}
   </View>
 );
 
