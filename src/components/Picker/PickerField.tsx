@@ -19,10 +19,18 @@ export const PickerField: React.FC<PickerFieldProps> = ({
   items,
   error,
 }) => {
+
+  const itemAtual = items.find(i => i.value === selectedValue)?.label || selectedValue;
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
-      <View style={[styles.pickerContainer, error && styles.errorBorder]}>
+    <View 
+      style={styles.container}
+      accessible={true}
+      accessibilityRole="combobox"
+      accessibilityLabel={`${label}. Selecionado atualmente: ${itemAtual}`}
+      accessibilityHint="Toque duas vezes para abrir as opções de seleção."
+    >
+      <Text style={styles.label} importantForAccessibility="no">{label}</Text>
+      <View style={[styles.pickerContainer, error && styles.errorBorder]} pointerEvents="none">
         <Picker
           selectedValue={selectedValue}
           onValueChange={onValueChange}
@@ -33,7 +41,7 @@ export const PickerField: React.FC<PickerFieldProps> = ({
           ))}
         </Picker>
       </View>
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && <Text style={styles.errorText} accessibilityLiveRegion="assertive">{error}</Text>}
     </View>
   );
 };

@@ -36,10 +36,16 @@ export const PcdModal: React.FC<Props> = ({ visible, userProfile, onComplete }) 
   };
 
   return (
-    <Modal transparent visible={visible} animationType="slide">
+    <Modal 
+      transparent visible={visible} 
+      animationType="slide"
+      onRequestClose={() => handleSave()}
+      accessibilityViewIsModal={true}
+      aria-modal={true}
+    >
       <View style={styles.overlay}>
         <View style={styles.container}>
-          <Text style={styles.title}>Para uma melhor experiência</Text>
+          <Text style={styles.title} accessibilityRole="header">Para uma melhor experiência</Text>
           <Text style={styles.subtitle}>
             Você possui algum tipo de deficiência? Isso nos ajuda a adaptar o aplicativo para você.
           </Text>
@@ -51,11 +57,23 @@ export const PcdModal: React.FC<Props> = ({ visible, userProfile, onComplete }) 
             items={TIPOS_DEFICIENCIA}
           />
 
-          <TouchableOpacity style={styles.button} onPress={handleSave} disabled={loading}>
+          <TouchableOpacity 
+            style={styles.button} 
+            onPress={handleSave} 
+            disabled={loading} 
+            accessibilityRole="button"
+            accessibilityLabel="Salvar opção selecionada"
+          >
             {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Salvar</Text>}
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.skipButton} onPress={handleSave}>
+          <TouchableOpacity 
+            style={styles.skipButton} 
+            onPress={handleSave}
+            accessibilityRole="button"
+            accessibilityLabel="Pular configuração"
+            accessibilityHint="Salva a preferência como nenhuma deficiência e entra no sistema"
+          >
             <Text style={styles.skipText}>Pular (salvar como nenhuma)</Text>
           </TouchableOpacity>
         </View>
