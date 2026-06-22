@@ -6,6 +6,8 @@ export const styles = StyleSheet.create({
         borderRadius: 15,
         borderBottomColor: '#1A1A1A',
         padding: 15,
+        backgroundColor: '#F8F9FA',
+        marginBottom:20
 
     },
     leftBar: {
@@ -21,12 +23,12 @@ export const styles = StyleSheet.create({
         alignSelf: 'flex-start',
     },
     gravidade: {
-        color:'#FFF',
+        color: '#FFF',
         fontSize: 20,
         borderRadius: 25,
         padding: 10,
         alignSelf: 'flex-start',
-        fontWeight:'500'
+        fontWeight: '500'
     },
     wrapper: {
         flexDirection: 'column',

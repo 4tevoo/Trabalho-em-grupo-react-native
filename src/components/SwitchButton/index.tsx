@@ -1,18 +1,21 @@
 import { Text, TouchableOpacity, ViewStyle, StyleProp } from 'react-native'
 import { styles } from './style'
-import React, { useState } from 'react'
 
 type SwitchButtonProps = {
   children: React.ReactNode
+  label: string
   style?: StyleProp<ViewStyle>
   isActive?: boolean
   onPress?: () => void
 }
 
-export default function SwitchButton({ children, style, isActive, onPress }: SwitchButtonProps) {
+export default function SwitchButton({ children, style, isActive, onPress, label}: SwitchButtonProps) {
 
   return (
     <TouchableOpacity
+    accessibilityRole='checkbox'
+    accessibilityLabel={label}
+    accessibilityState={{checked: isActive}}
       style={[styles.button, style, isActive && styles.buttonOn]}
       onPress={() => {
         onPress?.()
