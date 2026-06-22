@@ -1,4 +1,4 @@
-import { Alert, Image, Modal, ScrollView, Text, TextInput, TouchableOpacity, View, Share} from 'react-native'
+import { Alert, Image, Modal, ScrollView, Text, TextInput, TouchableOpacity, View, Share } from 'react-native'
 import { styles } from './style';
 import { CATEGORIAS } from '../../data/Categoria';
 import { FlatList } from 'react-native';
@@ -22,11 +22,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export const Form = () => {
-  const {user} = useAuth();
+  const { user } = useAuth();
   const [categoriaSelecionada, setCategoriaSelecionada] = useState<CategoriaNome>('')
 
-  const [localizacaoUsuario, setLocalizacaoUsuario] = useState<Coordenadas>({latitude: 0, longitude: 0});
-  const [localizacaoSelecionada, setLocalizacaoSelecionada] = useState<Coordenadas>({latitude: 0, longitude: 0});
+  const [localizacaoUsuario, setLocalizacaoUsuario] = useState<Coordenadas>({ latitude: 0, longitude: 0 });
+  const [localizacaoSelecionada, setLocalizacaoSelecionada] = useState<Coordenadas>({ latitude: 0, longitude: 0 });
   const [carregandoGps, setCarregandoGps] = useState<boolean>(false);
 
   const [descricao, setDescricao] = useState<string>('');
@@ -40,16 +40,18 @@ export const Form = () => {
   const [enderecoInput, setEnderecoInput] = useState<string>('');
   const [buscandoEndereco, setBuscandoEndereco] = useState<boolean>(false);
   const [enderecoConvertido, setEnderecoConvertido] = useState<string>('');
-  
+
   const mapaRef = useRef<MapView | null>(null);
   const navigate = useNavigation();
 
-  const converterCoordenadas = async () => {
+  const converterCoordenadas = async (cordOpc?: Coordenadas) => {
+
+    const coordenadas = cordOpc || localizacaoSelecionada;
     const enderecoConvertido = await converterCoordenadasEmEndereco(
-      localizacaoSelecionada.latitude,
-      localizacaoSelecionada.longitude);
+      coordenadas.latitude,
+      coordenadas.longitude);
     const enderecoFormatado = `${enderecoConvertido?.rua}, ${enderecoConvertido?.numero} - ${enderecoConvertido?.bairro}, ${enderecoConvertido?.cidade} `
-    if(enderecoConvertido) setEnderecoConvertido(enderecoFormatado)
+    if (enderecoConvertido) setEnderecoConvertido(enderecoFormatado)
   }
 
 
@@ -57,7 +59,7 @@ export const Form = () => {
     setCarregandoGps(true)
     const coordenadas = await obterLocalizacao();
 
-    if(coordenadas){
+    if (coordenadas) {
       setLocalizacaoUsuario(coordenadas);
       setLocalizacaoSelecionada(coordenadas);
       converterCoordenadas();
@@ -81,24 +83,24 @@ export const Form = () => {
     converterCoordenadas();
   };
 
-  const fotoCamera = async () =>{
-    if(fotos.length >= 3){
+  const fotoCamera = async () => {
+    if (fotos.length >= 3) {
       Alert.alert("Você não pode adicionar mais do que 3 fotos")
       return
     }
     const uri = await tirarFoto();
-    if(uri){
+    if (uri) {
       setFotos([...fotos, uri]);
     }
   }
 
   const fotoGaleria = async () => {
-    if(fotos.length >= 3){
+    if (fotos.length >= 3) {
       Alert.alert("Você não pode adicionar mais do que 3 fotos")
       return
     }
     const uri = await escolherDaGaleria();
-    if(uri){
+    if (uri) {
       setFotos([...fotos, uri])
     }
   }
@@ -114,7 +116,7 @@ export const Form = () => {
 
     if (coordenadas) {
       setLocalizacaoSelecionada(coordenadas);
-
+      converterCoordenadas(coordenadas);
       mapaRef.current?.animateToRegion({
         ...coordenadas,
         latitudeDelta: 0.005,
@@ -126,7 +128,7 @@ export const Form = () => {
     } else {
       Alert.alert('Local não encontrado', 'Não conseguimos converter este endereço em coordenadas. Verifique os dados e tente novamente.');
     }
-    
+
     setBuscandoEndereco(false);
   };
 
@@ -149,12 +151,12 @@ export const Form = () => {
     }
   };
 
-  const enviarObstaculo = async () =>{
+  const enviarObstaculo = async () => {
 
     if (!user) {
-       Alert.alert('Erro de autenticação', 'Você precisa estar logado para registrar um obstáculo.');
-       return;
-     }
+      Alert.alert('Erro de autenticação', 'Você precisa estar logado para registrar um obstáculo.');
+      return;
+    }
     if (categoriaSelecionada === '') {
       Alert.alert('Categoria obrigatória', 'Por favor, selecione uma categoria para o obstáculo.');
       return;
@@ -174,7 +176,7 @@ export const Form = () => {
 
     setEnviando(true)
 
-    const dadosCriarObstaculo:DadosObstaculo = {
+    const dadosCriarObstaculo: DadosObstaculo = {
       profile_id: user.id,
       categoria: categoriaSelecionada,
       latitude: localizacaoSelecionada.latitude,
@@ -188,7 +190,7 @@ export const Form = () => {
       const resultado = await criarObstaculo(dadosCriarObstaculo);
       if (resultado.sucesso) {
         Alert.alert(
-          'Sucesso!', 
+          'Sucesso!',
           'Obstáculo registrado com sucesso no mapa.',
           [
             {
@@ -210,7 +212,7 @@ export const Form = () => {
       }
     } catch (error) {
       Alert.alert('Erro', 'Ocorreu um erro inesperado ao conectar com o servidor.');
-    }finally{
+    } finally {
       setEnviando(false)
       limparFormulario()
     }
@@ -228,18 +230,18 @@ export const Form = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#3B75B0' }} edges={['top']}>
       <KeyboardAvoidingView
-        style={{ flex: 1 }} 
+        style={{ flex: 1 }}
         behavior={'height'}
       >
         <View style={styles.headerRegistro} accessibilityRole="header">
-            <Text style={styles.tituloHeader}>
-              REGISTRAR OBSTÁCULO
-            </Text>
+          <Text style={styles.tituloHeader}>
+            REGISTRAR OBSTÁCULO
+          </Text>
         </View>
-        <ScrollView 
-          style={styles.container} 
+        <ScrollView
+          style={styles.container}
           contentContainerStyle={styles.content}>
-          
+
 
           {/* CONTAINER DE CATEGORIAS */}
           <View style={styles.subContainer}>
@@ -249,39 +251,39 @@ export const Form = () => {
 
             {/* BOTÕES DE CATEGORIA */}
             <FlatList
-              data={CATEGORIAS} 
+              data={CATEGORIAS}
               renderItem={({ item }) => (
-                <CardCategoria 
+                <CardCategoria
                   item={item}
                   selecionado={categoriaSelecionada === item.nome}
                   onPress={() => setCategoriaSelecionada(item.nome)}
-                /> )}
-              keyExtractor={(item) => item.nome} 
+                />)}
+              keyExtractor={(item) => item.nome}
               numColumns={3}
-              columnWrapperStyle={styles.linha} 
+              columnWrapperStyle={styles.linha}
               scrollEnabled={false}
             />
             <Text style={styles.subTitulo}>Gravidade</Text>
-            <View 
+            <View
               style={styles.contGravidade}
-              accessibilityRole="radiogroup" 
+              accessibilityRole="radiogroup"
               accessibilityLabel="Nível de gravidade do obstáculo"
             >
-              <TouchableOpacity 
-                style={[styles.botaoGravidade, {backgroundColor:"#D83025"}, gravidade === 'inacessivel'? styles.gravidadeClicada : null]}
+              <TouchableOpacity
+                style={[styles.botaoGravidade, { backgroundColor: "#D83025" }, gravidade === 'inacessivel' ? styles.gravidadeClicada : null]}
                 onPress={() => setGravidade('inacessivel')}
                 accessibilityRole="radio"
                 accessibilityState={{ selected: gravidade === 'inacessivel' }}
                 accessibilityLabel="Gravidade: Crítico"
                 accessibilityHint="Selecione se o obstáculo impede totalmente a passagem ou o acesso."
-              > 
-                <Text 
+              >
+                <Text
                   style={styles.labelGravidade}>Crítico
-                </Text> 
+                </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity 
-                style={[styles.botaoGravidade, {backgroundColor:"#FABD03"}, gravidade === 'intermediario'? styles.gravidadeClicada : null]}
+              <TouchableOpacity
+                style={[styles.botaoGravidade, { backgroundColor: "#FABD03" }, gravidade === 'intermediario' ? styles.gravidadeClicada : null]}
                 onPress={() => setGravidade('intermediario')}
                 accessibilityRole="radio"
                 accessibilityState={{ selected: gravidade === 'intermediario' }}
@@ -290,7 +292,7 @@ export const Form = () => {
               >
                 <Text style={styles.labelGravidade}>
                   Médio
-                </Text> 
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -298,11 +300,11 @@ export const Form = () => {
           {/* CONTAINER DO MAPA */}
           <View style={styles.subContainer}>
             <Text style={styles.titulo}>Local</Text>
-            <Text style={[styles.subTitulo, {paddingTop: 0}]}>
+            <Text style={[styles.subTitulo, { paddingTop: 0 }]}>
               O mapa abaixo já mostra sua posição. Se o obstáculo for em outro lugar da rua, basta tocar no mapa para mudar o marcador ou escrever o endereço clicando em "Digitar endereço".
             </Text>
 
-            <View 
+            <View
               style={styles.containerMapa}
               accessibilityLabel="Mapa interativo"
               accessibilityHint="Toque no mapa para marcar o local exato do obstáculo se ele não for na sua posição atual"
@@ -311,7 +313,7 @@ export const Form = () => {
                 ref={mapaRef}
                 style={styles.mapa}
                 initialRegion={{
-                  latitude: localizacaoUsuario?.latitude || -22.2855, 
+                  latitude: localizacaoUsuario?.latitude || -22.2855,
                   longitude: localizacaoUsuario?.longitude || -42.5342,
                   latitudeDelta: 0.01,
                   longitudeDelta: 0.01,
@@ -321,17 +323,17 @@ export const Form = () => {
                 showsMyLocationButton={false}
               >
                 {localizacaoSelecionada && (
-                  <Marker 
-                    coordinate={localizacaoSelecionada} 
+                  <Marker
+                    coordinate={localizacaoSelecionada}
                     title="Local do Obstáculo"
                     description="O problema está acontecendo aqui"
                   />
                 )}
               </MapView>
 
-              
+
             </View>
-            <Botao 
+            <Botao
               title="Localização Atual"
               variante="primary"
               padding={10}
@@ -339,23 +341,23 @@ export const Form = () => {
               carregando={carregandoGps}
               onPress={carregarGps}
               accessibilityLabel="Centralizar mapa na minha localização atual"
-              icon={<MaterialIcons name='location-searching' size={20} color={'#ffffff'}/>}
+              icon={<MaterialIcons name='location-searching' size={20} color={'#ffffff'} />}
             />
 
-            <Botao 
+            <Botao
               title="Digitar endereço"
               variante="secondary"
               padding={10}
               fontSize={12}
               style={{ marginTop: 5 }}
               carregando={buscandoEndereco}
-              onPress={() => setModalEnderecoVisivel(true)} 
+              onPress={() => setModalEnderecoVisivel(true)}
               accessibilityLabel="Digitar endereço manualmente"
             />
 
             {localizacaoSelecionada && (
-              <Text 
-                style={styles.labelCoordenadas} 
+              <Text
+                style={styles.labelCoordenadas}
                 accessibilityLiveRegion="polite"
                 accessibilityLabel="Endereço marcado com sucesso."
               >
@@ -365,44 +367,44 @@ export const Form = () => {
             )}
           </View>
 
-          
-          
+
+
           {/* CONTAINER DE IMAGEM */}
           <View style={styles.subContainer}>
             <Text style={styles.titulo}>
               ADICIONAR FOTO
             </Text>
-            <View style={{flexDirection: 'row', gap: 5}}>
-            <TouchableOpacity style={styles.botaoFoto} onPress={fotoCamera} disabled={fotos.length >= 3}>
-                <MaterialIcons name='photo-camera' size={35} color={'#3B75B0'}/>
-                <Text style={[styles.subTitulo, {paddingTop: 5}]}>Tirar foto</Text>
-            </TouchableOpacity>
+            <View style={{ flexDirection: 'row', gap: 5 }}>
+              <TouchableOpacity style={styles.botaoFoto} onPress={fotoCamera} disabled={fotos.length >= 3}>
+                <MaterialIcons name='photo-camera' size={35} color={'#3B75B0'} />
+                <Text style={[styles.subTitulo, { paddingTop: 5 }]}>Tirar foto</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity style={styles.botaoFoto} onPress={fotoGaleria} disabled={fotos.length >= 3}>
-              <MaterialIcons name='photo' size={35} color={'#3B75B0'}/>
-              <Text style={[styles.subTitulo, {paddingTop: 5}]}>Galeria</Text>
-            </TouchableOpacity>
+              <TouchableOpacity style={styles.botaoFoto} onPress={fotoGaleria} disabled={fotos.length >= 3}>
+                <MaterialIcons name='photo' size={35} color={'#3B75B0'} />
+                <Text style={[styles.subTitulo, { paddingTop: 5 }]}>Galeria</Text>
+              </TouchableOpacity>
             </View>
-            
+
             {/* CONTAINER DE MINIATURAS DAS IMAGENS SELECIONADAS */}
             <FlatList
               data={fotos}
               keyExtractor={(index) => index.toString()}
-              horizontal={true}                               
-              showsHorizontalScrollIndicator={false}          
-              contentContainerStyle={{ gap: 10 }}             
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ gap: 10 }}
               renderItem={({ item: uri, index }) => (
                 <View style={styles.containerMiniatura}>
                   <Image source={{ uri }} style={styles.miniatura} />
-                  
-                  <TouchableOpacity 
+
+                  <TouchableOpacity
                     style={styles.botaoRemoverFoto}
                     onPress={() => setFotos(fotos.filter((_, i) => i !== index))}
                   >
                     <Text style={styles.textBotaoRemover}>X</Text>
                   </TouchableOpacity>
                 </View>
-                )}
+              )}
             />
           </View>
 
@@ -410,9 +412,9 @@ export const Form = () => {
           {/* CONTAINER DE DESCRIÇÃO */}
           <View style={styles.subContainer}>
             <Text style={styles.titulo}>Descrição</Text>
-            <TextInput style={styles.inputDescricao} 
-              placeholder='Descreva o problema com detalhes e pontos de referência (Ex: Carro estacionado na rampa ao lado da farmácia, buraco profundo na calçada, galho caído...)' 
-              placeholderTextColor={'#9c9c9c'} 
+            <TextInput style={styles.inputDescricao}
+              placeholder='Descreva o problema com detalhes e pontos de referência (Ex: Carro estacionado na rampa ao lado da farmácia, buraco profundo na calçada, galho caído...)'
+              placeholderTextColor={'#9c9c9c'}
               onChangeText={setDescricao}
               value={descricao}
               multiline={true}
@@ -422,8 +424,8 @@ export const Form = () => {
             >
             </TextInput>
           </View>
-                
-          <Botao 
+
+          <Botao
             title="Enviar relato"
             variante="primary"
             padding={20}
@@ -431,7 +433,7 @@ export const Form = () => {
             carregando={enviando}
             onPress={enviarObstaculo}
             accessibilityLabel="Enviar formulário de relato"
-          />    
+          />
         </ScrollView>
         {/* MODAL DE DIGITAR ENDEREÇO */}
         <Modal
@@ -442,13 +444,13 @@ export const Form = () => {
           aria-modal={true}
         >
           <View style={styles.modalOverlay}>
-            <View 
+            <View
               style={styles.modalContent}
               accessibilityRole="none"
             >
               {/* TÍTULO DO MODAL */}
-              <Text 
-                style={styles.modalTitulo} 
+              <Text
+                style={styles.modalTitulo}
                 accessibilityRole="header"
               >
                 Digitar Endereço
@@ -469,7 +471,7 @@ export const Form = () => {
                 accessibilityHint="Digite o local do obstáculo com rua, número, bairro e cidade."
               />
 
-              
+
               <View style={styles.modalContainerBotoes}>
                 <View style={{ flex: 1 }}>
                   <Botao
