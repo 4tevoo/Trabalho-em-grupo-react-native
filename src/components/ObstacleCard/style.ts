@@ -3,11 +3,9 @@ export const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         borderBottomWidth: 1,
-        borderRadius: 15,
-        borderBottomColor: '#1A1A1A',
+        borderBottomColor: '#ECECF3',
         padding: 15,
-        backgroundColor: '#F8F9FA',
-        marginBottom:20
+        backgroundColor: '#FFF',
 
     },
     leftBar: {

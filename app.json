@@ -22,8 +22,14 @@
           "iosGoogleMapsApiKey": "AIzaSyBk4HFWwoMzjClk9TIzbWOF_72QiL6D3R4"
         }
       ],
-      "expo-font",
-      "expo-splash-screen"
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#3A75AF",
+          "image": "src/assets/splashscreen.png",
+          "imageWidth": 200
+        }
+      ]
     ]
   }
 }
