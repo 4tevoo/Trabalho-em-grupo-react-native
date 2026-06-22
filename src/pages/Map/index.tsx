@@ -98,6 +98,9 @@ export const Map = () => {
                 pinColor={obs.gravidade === 'inacessivel' ? '#D83025' : obs.gravidade === 'intermediario' ? '#FABD03' : '#109D57'}
                 title={obs.categoria}
                 description={obs.descricao}
+                
+                accessible={true}
+                accessibilityLabel={`Obstáculo: ${obs.categoria}. ${obs.gravidade}. Descrição: ${obs.descricao}`}
                 >
 
                 </Marker>
@@ -105,17 +108,43 @@ export const Map = () => {
             }
             {/* <Marker coordinate={{latitude: localizacaoUsuario.latitude, longitude: localizacaoUsuario.longitude}}></Marker> */}
           </MapView>
-          <TouchableOpacity style={styles.cameraButton} onPress={tirarPrintMapa}>
-            <Ionicons name='camera' size={26} color='#F8F9FA'></Ionicons>
+          <TouchableOpacity 
+            style={styles.cameraButton} 
+            onPress={tirarPrintMapa}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="Capturar imagem do mapa"
+            accessibilityHint="Gera um arquivo de imagem com a visão atual do mapa de obstáculos"
+          >
+            <Ionicons name='camera' size={26} color='#F8F9FA' importantForAccessibility="no"></Ionicons>
           </TouchableOpacity>
         </View>
-        <View style={styles.accessibilityLevelCaption}>
-          <View style={styles.captionTextWrapper}><Ionicons name='ellipse' size={18} color='#109D57'/><Text style={styles.captionText}>Resolvido</Text></View>
-          <View style={styles.captionTextWrapper}><Ionicons name='ellipse' size={18} color='#FABD03'/><Text style={styles.captionText}>Intermediário</Text></View>
-          <View style={styles.captionTextWrapper}><Ionicons name='ellipse' size={18} color='#D83025'/><Text style={styles.captionText}>Inacessível</Text></View>
+        <View style={styles.accessibilityLevelCaption} accessibilityRole="none">
+          <View style={styles.captionTextWrapper} accessible={true} accessibilityLabel="Legenda: Cor verde significa Resolvido">
+            <Ionicons name='ellipse' size={18} color='#109D57' importantForAccessibility="no"/>
+            <Text style={styles.captionText} importantForAccessibility="no">Resolvido</Text>
+          </View>
+          <View style={styles.captionTextWrapper} accessible={true} accessibilityLabel="Legenda: Cor amarela significa Intermediário">
+            <Ionicons name='ellipse' size={18} color='#FABD03' importantForAccessibility="no"/>
+            <Text style={styles.captionText} importantForAccessibility="no">Intermediário</Text>
+          </View>
+          <View style={styles.captionTextWrapper} accessible={true} accessibilityLabel="Legenda: Cor vermelha significa Inacessível">
+            <Ionicons name='ellipse' size={18} color='#D83025' importantForAccessibility="no"/>
+            <Text style={styles.captionText} importantForAccessibility="no">Inacessível</Text>
+          </View>
         </View>
       </View>
-        <TouchableOpacity style={styles.accessibleMapButton} onPress={() => navigate.navigate('TabsObstaculos')}><Ionicons name='list' size={26} color='#F8F9FA'/><Text style={styles.accessibleMapButtonText}>Modo de lista para baixa visão</Text></TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.accessibleMapButton} 
+          onPress={() => navigate.navigate('TabsObstaculos')}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel="Alternar para modo de lista para baixa visão"
+          accessibilityHint="Navega para a tela contendo os mesmos obstáculos listados em formato de texto acessível"
+        >
+            <Ionicons name='list' size={26} color='#F8F9FA' importantForAccessibility="no"/>
+            <Text style={styles.accessibleMapButtonText} importantForAccessibility="no">Modo de lista para baixa visão</Text>
+        </TouchableOpacity>
     </ScrollView>
   )
 }
